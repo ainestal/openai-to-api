@@ -68,7 +68,6 @@ impl ChatGPT {
             role: "user".to_string(),
             content: input,
         });
-        println!("Request to GPT: {:?}", self.context);
 
         let response = self
             .client
