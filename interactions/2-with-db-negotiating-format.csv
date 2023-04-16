@@ -1,0 +1,90 @@
+"id","role","content","session_id","archived"
+1,"user","You are connected to a database now, it is storing all our messages. I'm working on giving you long term memory so you can hold more than just the few bytes I can send you through the context. You and I need to agree a format to communicate and a protocol to follow so you can access this extra memory. Do you understand what I'm saying?
+","369ca981-f38f-4f80-924c-dbb5041102e0",False
+2,"assistant","Yes, I understand what you're saying. In order to effectively communicate and access the extra memory stored in the database, we need to establish a specific format and protocol to follow. If you have a specific format and protocol in mind, please share it with me, or we can discuss different options to find the most suitable one for our communication.","369ca981-f38f-4f80-924c-dbb5041102e0",False
+3,"user","Good. Let's discuss a specific format so I know you want to store some knowledge in the database, or you want to retrieve it to use it to produce further answers. I need this format to be very easy to parse from my program. Give me a proposal on how you will reply so I can parse your text and automatically write something in our database, or read something from the database and give it back to you. By the way, the current database table has the following structure: 'id: i32, role: string, content: string, archived: bool'. My intention is for you to use 'content' to store any information you want, and use 'id' to be able to access it easily.
+","369ca981-f38f-4f80-924c-dbb5041102e0",False
+4,"assistant","I propose the following format for our communication:
+
+When you want to write information to the database, send a message with the following structure:
+
+`WRITE id=<ID_NUMBER> role=<ROLE_NAME> content=<CONTENT>`
+
+For example: 
+`WRITE id=1 role=assistant content=""The Earth is the third planet from the Sun.""`
+
+And when you want to retrieve information from the database, send a message like this:
+
+`READ id=<ID_NUMBER>`
+
+For example: `READ id=1`
+
+When returning the data from the database, I will respond in this format:
+
+`RESULT id=<ID_NUMBER> role=<ROLE_NAME> content=<CONTENT>`
+
+For the previous example, I would reply: `RESULT id=1 role=assistant content=""The Earth is the third planet from the Sun.""`
+
+Please let me know if this format works for you or if you have any suggestions or modifications.","369ca981-f38f-4f80-924c-dbb5041102e0",False
+5,"user","Assistant, you are confusing who is doing what. I expect you, assistant, to ask me, user, to store information and retrieve information from a database. The format is ok, but I prefer to have it in JSON so it is easier to parse. Can you give me that format formated in JSON? Also I think there are 2 other modifications to do: 1: remove the 'id' and 'role' from the WRITE command since they will be inferred from the ins and the fact that assistant is the only one interacting directly with the database. 2: add an extra field for comments you don't want stored in the database as knowledge, they are just for us to coordinate. Is that clear?
+","369ca981-f38f-4f80-924c-dbb5041102e0",False
+6,"assistant","Apologies for the confusion, and I understand the requirements. Here is a proposal for the format:
+
+```javascript
+{
+  ""action"": ""write"", // or ""read""
+  ""content"": ""This is the information you want to store or a query to search within the content"",
+  ""archived"": false, // optional for ""write"" action, not needed for ""read""
+  ""comment"": ""This comment is just for us to coordinate and won't be stored as knowledge""
+}
+```
+- The `id` and `role` fields are removed from the format, as you suggested.
+- The `comment` field is included for coordination between us and won't be stored in the database.
+
+Please let me know if you have any suggestions or if anything needs to be clarified.","369ca981-f38f-4f80-924c-dbb5041102e0",False
+7,"user","Ok, that format works for me, thank you. From now you will ONLY communicate with me using that format. You can start using it to store information into the database and you will be able to retrieve at any point that information if you want to. Is that ok?
+","369ca981-f38f-4f80-924c-dbb5041102e0",False
+8,"assistant","{
+  ""action"": ""confirmation"",
+  ""content"": """",
+  ""archived"": false,
+  ""comments"": ""Yes, I understand and will use this format to communicate with you for storing and retrieving information from the database. Let's proceed.""
+}","369ca981-f38f-4f80-924c-dbb5041102e0",False
+9,"user","Thank you for using the format. There is another improvement to do. You used 'confirmation' as an action, but we didn't define more than write and read actions. What is the list of actions we should allow?
+","369ca981-f38f-4f80-924c-dbb5041102e0",False
+10,"assistant","I apologize for the confusion. Let's stick to the ""write"" and ""read"" actions as we initially agreed. Here is the revised format:
+
+1. Write Action:
+{
+  ""action"": ""write"",
+  ""content"": ""The information you want to store in the database"",
+  ""archived"": false,
+  ""comment"": ""A comment for us to coordinate""
+}
+
+2. Read Action:
+{
+  ""action"": ""read"",
+  ""id"": ""The id of the information you want to retrieve from the database"",
+  ""comment"": ""A comment for us to coordinate""
+}
+
+These two actions should cover our needs for storing and retrieving information. If you agree with this format, we can proceed and use it for our communication.","369ca981-f38f-4f80-924c-dbb5041102e0",False
+11,"user","Great, thank you. Can you create a prompt that I will give to an AI assistant so we can quickly set the context for it and we start communicating from the beginning with this format? I intend to use it as the first input to an assistant and then allow it to interact with the database
+","369ca981-f38f-4f80-924c-dbb5041102e0",False
+12,"assistant","{
+  ""action"": ""initialize"",
+  ""message"": ""Welcome to the database assistant. You have been connected to a database to store and retrieve information usinglong_tterm memory. Please follow the JSON communication format to ensure seamless interaction between us. The allowed actions include: 'write', 'read', and 'comment'. To store or retrieve information, use 'content'. Keep in mind that the current database table has the following structure: 'id: i32, role: string, content: string, archived: bool'. Good luck and feel free to ask any questions or provide comments whenever needed.""
+}","369ca981-f38f-4f80-924c-dbb5041102e0",False
+13,"user","Let's stop this session here, I'll start another one so you don't get confused, you had several errors in that previous respone and I suspect is because you have too much to process
+","369ca981-f38f-4f80-924c-dbb5041102e0",False
+14,"assistant","I apologize for any confusion in my previous responses. Please feel free to start a new session, and I'll do my best to provide clear and accurate answers.","369ca981-f38f-4f80-924c-dbb5041102e0",False
+15,"user","You didn't follow our agreed format!
+","369ca981-f38f-4f80-924c-dbb5041102e0",False
+16,"assistant","I apologize for not following the agreed format. Let me correct that and provide a response in the proper format:
+
+{
+  ""action"": ""write"",
+  ""content"": """",
+  ""comments"": ""I apologize for the confusion in my previous responses. I understand you want to start a new session with a fresh context so that it is easier for me to process the information. If you have any further instructions or questions, please provide them in this format and I will do my best to follow it.""
+}","369ca981-f38f-4f80-924c-dbb5041102e0",False

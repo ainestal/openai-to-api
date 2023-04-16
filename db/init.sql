@@ -11,3 +11,11 @@ INSERT INTO
 VALUES
     ('test row 1', true),
     ('test row 2', false);
+
+CREATE TABLE message(
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    role TEXT NOT NULL,
+    content TEXT NOT NULL,
+    session_id TEXT NOT NULL,
+    archived BOOLEAN NOT NULL DEFAULT FALSE
+);

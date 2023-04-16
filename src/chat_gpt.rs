@@ -49,17 +49,19 @@ pub struct ChatResponse {
 pub struct ChatGPT {
     client: reqwest::Client,
     pub context: ChatContext,
-    token: String,
+    openai_api_token: String,
+    session_id: String,
 }
 
 impl ChatGPT {
-    pub fn new(token: String) -> Result<ChatGPT> {
+    pub fn new(openai_api_token: String, session_id: String) -> Result<ChatGPT> {
         let client = reqwest::Client::new();
         let context = ChatContext::new();
         Ok(ChatGPT {
             client,
             context,
-            token,
+            openai_api_token,
+            session_id,
         })
     }
 
@@ -72,7 +74,7 @@ impl ChatGPT {
         let response = self
             .client
             .post(URL)
-            .bearer_auth(&self.token)
+            .bearer_auth(&self.openai_api_token)
             .header("Content-Type", "application/json")
             .json(&self.context)
             .send()
