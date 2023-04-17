@@ -1,7 +1,7 @@
 use anyhow::Result;
 use sqlx::{self, PgPool};
 
-pub async fn store_message(
+pub async fn log_message(
     role: String,
     content: String,
     session_id: String,
